@@ -143,8 +143,8 @@ impl AttestProducer for SoftwareAttestProducer {
 // ── Stub signer used internally by SoftwareAttestProducer ────────────────────
 
 /// Placeholder DER: an empty SEQUENCE. Not a parseable certificate.
-#[cfg(feature = "test-support")]
-const STUB_CERT: [u8; 2] = [0x30, 0x00];
+#[cfg(any(test, feature = "test-support"))]
+pub(crate) const STUB_CERT: [u8; 2] = [0x30, 0x00];
 
 #[cfg(feature = "test-support")]
 struct StubSigner;

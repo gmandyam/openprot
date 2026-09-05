@@ -226,6 +226,8 @@ mod tests {
     };
     use openprot_attest_api::{AttestError, DigestAlgorithm, MeasurementAuthority, OemId};
 
+    use crate::signer::STUB_CERT;
+
     struct TestSigner;
 
     impl HwSigner for TestSigner {
@@ -233,7 +235,7 @@ mod tests {
             Ok([0u8; 96])
         }
         fn leaf_cert_der(&self, buf: &mut Vec<u8, MAX_CERT_SIZE>) -> Result<(), AttestError> {
-            buf.extend_from_slice(&[0x30, 0x00])
+            buf.extend_from_slice(&STUB_CERT)
                 .map_err(|_| AttestError::BufferFull)
         }
         fn cert_chain_der(
@@ -241,9 +243,9 @@ mod tests {
             buf: &mut Vec<Vec<u8, MAX_CERT_SIZE>, MAX_CHAIN_LEN>,
         ) -> Result<(), AttestError> {
             let mut c0: Vec<u8, MAX_CERT_SIZE> = Vec::new();
-            c0.extend_from_slice(&[0x30, 0x00]).unwrap();
+            c0.extend_from_slice(&STUB_CERT).unwrap();
             let mut c1: Vec<u8, MAX_CERT_SIZE> = Vec::new();
-            c1.extend_from_slice(&[0x30, 0x00]).unwrap();
+            c1.extend_from_slice(&STUB_CERT).unwrap();
             buf.push(c0).map_err(|_| AttestError::BufferFull)?;
             buf.push(c1).map_err(|_| AttestError::BufferFull)?;
             Ok(())
